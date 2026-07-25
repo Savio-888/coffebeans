@@ -35,8 +35,8 @@ class Bean:
             conn = Database.connect_db()
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM beans')
-            if cursor.fetchall():
-                db_list = cursor.fetchall
+            db_list = cursor.fetchall()
+            if db_list:
                 actual_list = [dict(line) for line in db_list]
                 return actual_list
             else:
@@ -52,8 +52,8 @@ class Bean:
             conn = Database.connect_db()
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM beans ORDER BY rating DESC')
-            if cursor.fetchall():
-                db_list = cursor.fetchall
+            db_list = cursor.fetchall()
+            if db_list:
                 actual_list = [dict(line) for line in db_list]
                 return actual_list
             else:
@@ -69,8 +69,8 @@ class Bean:
             conn = Database.connect_db()
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM beans ORDER BY rating ASC')
-            if cursor.fetchall():
-                db_list = cursor.fetchall
+            db_list = cursor.fetchall()
+            if db_list:
                 actual_list = [dict(line) for line in db_list]
                 return actual_list
             else:
@@ -86,8 +86,8 @@ class Bean:
             conn = Database.connect_db()
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM beans ORDER BY date_create DESC')
-            if cursor.fetchall():
-                db_list = cursor.fetchall
+            db_list = cursor.fetchall()
+            if db_list:
                 actual_list = [dict(line) for line in db_list]
                 return actual_list
             else:

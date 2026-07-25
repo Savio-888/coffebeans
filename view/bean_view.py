@@ -6,9 +6,9 @@ class Bean_view:
             [1] - INSERT BEAN
             [2] - LIST BEANS
             [0] - EXIT''')
-            escolha = input('>> ')
-            if escolha in '120':
-                return escolha
+            choice = input('>> ')
+            if choice in '120':
+                return choice
             else:
                 print('INPUT ERROR: Invalid Option')
                 continue
@@ -35,13 +35,16 @@ class Bean_view:
             [3] - BETTER RATING TO WORST RATING
             [4] - WORST RATING TO BETTER RATING
             [0] - EXIT''')
-            escolha = input('>> ')
-            if escolha in '12340':
-                return escolha
+            choice = input('>> ')
+            if choice in '12340':
+                return choice
             else:
                 print('ERROR: Invalid Option')
                 continue
     @staticmethod
     def list_beans(bean_list):
-        for line in bean_list:
-            print(f'\nNAME: {line['name']}\nBREWING METHOD: {line['brewing']}\nRATING: {line['rating']}/10\nDATE OF LOG: {line['date_create']}')
+        if bean_list:
+            for line in bean_list:
+                print(f'\nNAME: {line['name']}\nBREWING METHOD: {line['brewing']}\nRATING: {line['rating']}/10\nDATE OF LOG: {line['date_create']}')
+        else:
+            print('There is no coffe beans log registered yet...')
