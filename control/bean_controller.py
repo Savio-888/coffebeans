@@ -1,4 +1,4 @@
-from model.bean import Bean
+from model.bean import Bean_model
 from view.bean_view import Bean_view
 import sys
 
@@ -10,21 +10,21 @@ class Bean_controller:
             match choice:
                 case '1':
                     name, brewing, rating = Bean_view.insert_bean()
-                    Bean.insert_bean(name, brewing, rating)
+                    Bean_model.insert_bean(name, brewing, rating)
                 case '2':
                     choice = Bean_view.list_beans_menu()
                     match choice:
                         case '1':
-                            list = Bean.list_beans()
+                            list = Bean_model.list_beans()
                             Bean_view.list_beans(list)
                         case '2':
-                            list = Bean.list_bydate()
+                            list = Bean_model.list_bydate()
                             Bean_view.list_beans(list)
                         case '3':
-                            list = Bean.list_byrating_best()
+                            list = Bean_model.list_byrating_best()
                             Bean_view.list_beans(list)
                         case '4':
-                            list = Bean.list_byrating_worst()
+                            list = Bean_model.list_byrating_worst()
                             Bean_view.list_beans(list)
                         case '0':
                             sys.exit()
