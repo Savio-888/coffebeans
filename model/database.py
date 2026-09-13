@@ -1,7 +1,3 @@
-import sqlite3
-class Database:
-    @staticmethod
-    def connect_db():
-        conn = sqlite3.connect('database.db')
-        conn.row_factory = sqlite3.Row
-        return conn
+from sqlalchemy import create_engine
+
+engine = create_engine('sqlite:///database.db')
