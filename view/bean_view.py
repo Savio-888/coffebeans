@@ -45,6 +45,6 @@ class Bean_view:
     def list_beans(bean_list):
         if bean_list:
             for line in bean_list:
-                print(f'\nNAME: {line['name']}\nBREWING METHOD: {line['brewing']}\nRATING: {line['rating']}/10\nDATE OF LOG: {line['date_create']}')
+                print(f'\nNAME: {line.name}\nBREWING METHOD: {line.brewing_method}\nRATING: {line.rating}/10\nDATE OF LOG: {line.date_creation}')
         else:
             print('There is no coffe beans log registered yet...')

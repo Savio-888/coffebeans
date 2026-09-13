@@ -1,7 +1,17 @@
-import sqlite3
-class Database:
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+Base = declarative_base()
+engine = create_engine('sqlite:///database.db')
+
+class Database():
     @staticmethod
-    def connect_db():
-        conn = sqlite3.connect('database.db')
-        conn.row_factory = sqlite3.Row
-        return conn
+    def create_database():
+        Base.metadata.create_all(engine)
+    @staticmethod
+    def create_session(engine):
+        _session = sessionmaker(engine)
+        session = _session()
+        return session
+
+

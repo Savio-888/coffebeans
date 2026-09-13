@@ -1,99 +1,45 @@
-from model.database import Database
-from sqlite3 import Error
-class Bean:
-    @staticmethod
-    def create_table():
-        try:
-            conn = Database.connect_db()
-            cursor = conn.cursor()
-            cursor.execute('CREATE TABLE IF NOT EXISTS beans(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, brewing TEXT, rating INTEGER CHECK(rating BETWEEN 1 AND 10), date_create TEXT NOT NULL DEFAULT(CURRENT_TIMESTAMP))')
-            conn.commit()
-            conn.close()
-            return True
-        except Error as e:
-            print(f'ERROR: {e}')
-            conn.rollback()
-            conn.close()
-            return False
+from model.database import Database, Base, engine
+from sqlalchemy import Column, String, Integer, DateTime, CheckConstraint
+import datetime
+
+class Bean(Base):
+    __tablename__ = 'beans'
+
+    id_bean = Column(Integer, primary_key=True)
+    name = Column(String(80), nullable=False)
+    brewing_method = Column(String, nullable=False)
+    rating = Column(Integer, CheckConstraint('rating >= 1 AND rating <= 10', name='check_rating_range'), nullable=False)
+    date_creation = Column(DateTime, nullable=False)
+
+class Bean_model():
     @staticmethod
     def insert_bean(name, brewing, rating):
-        try:
-            conn = Database.connect_db()
-            cursor = conn.cursor()
-            cursor.execute('INSERT INTO beans(name, brewing, rating) VALUES(?, ?, ?)', (name, brewing, rating))
-            conn.commit()
-            conn.close()
-            return True
-        except Error as e:
-            print(f'ERROR: {e}')
-            conn.rollback()
-            conn.close()
-            return False
+        session = Database.create_session(engine)
+        bean = Bean(name=name, brewing_method=brewing, rating=rating, date_creation=datetime.datetime.now())
+        session.add(bean)
+        session.commit()
+        session.close()
     @staticmethod
     def list_beans():
-        try:
-            conn = Database.connect_db()
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM beans')
-            db_list = cursor.fetchall()
-            if db_list:
-                actual_list = [dict(line) for line in db_list]
-                return actual_list
-            else:
-                return False
-        except Error as e:
-            print(f'ERROR: {e}')
-            conn.rollback()
-            conn.close()
-            return False
-    @staticmethod
-    def list_byrating_best():
-        try:
-            conn = Database.connect_db()
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM beans ORDER BY rating DESC')
-            db_list = cursor.fetchall()
-            if db_list:
-                actual_list = [dict(line) for line in db_list]
-                return actual_list
-            else:
-                return False
-        except Error as e:
-            print(f'ERROR: {e}')
-            conn.rollback()
-            conn.close()
-            return False
-    @staticmethod
-    def list_byrating_worst():
-        try:
-            conn = Database.connect_db()
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM beans ORDER BY rating ASC')
-            db_list = cursor.fetchall()
-            if db_list:
-                actual_list = [dict(line) for line in db_list]
-                return actual_list
-            else:
-                return False
-        except Error as e:
-            print(f'ERROR: {e}')
-            conn.rollback()
-            conn.close()
-            return False
+        session = Database.create_session(engine)
+        list = session.query(Bean).all()
+        session.close()
+        return list
     @staticmethod
     def list_bydate():
-        try:
-            conn = Database.connect_db()
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM beans ORDER BY date_create DESC')
-            db_list = cursor.fetchall()
-            if db_list:
-                actual_list = [dict(line) for line in db_list]
-                return actual_list
-            else:
-                return False
-        except Error as e:
-            print(f'ERROR: {e}')
-            conn.rollback()
-            conn.close()
-            return False
+        session = Database.create_session(engine)
+        list = session.query(Bean).order_by(Bean.date_creation.desc()).all()
+        session.close()
+        return list
+    @staticmethod
+    def list_byrating_best():
+        session = Database.create_session(engine)
+        list = session.query(Bean).order_by(Bean.rating.desc()).all()
+        session.close()
+        return list
+    @staticmethod
+    def list_byrating_worst():
+        session = Database.create_session(engine)
+        list = session.query(Bean).order_by(Bean.rating).all()
+        session.close()
+        return list

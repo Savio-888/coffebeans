@@ -1,4 +1,6 @@
-from model.bean import Bean
+from model.database import Database
 from control.bean_controller import Bean_controller
-Bean.create_table()
-Bean_controller.main()
+
+if __name__ == '__main__':
+    Database.create_database()
+    Bean_controller.main()
